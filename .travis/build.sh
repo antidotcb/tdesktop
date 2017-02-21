@@ -611,7 +611,7 @@ buildTelegram() {
 
   export ASM="gcc"
   cmake .
-  make $MAKE_ARGS
+  make $MAKE_ARGS VERBOSE=1
 }
 
 check() {
