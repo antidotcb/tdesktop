@@ -75,7 +75,7 @@ function(export_all_flags _filename _source_name_for_flags)
   set(_compile_definitions "$<$<BOOL:${_compile_definitions}>:-D$<JOIN:${_compile_definitions},\n-D>\n>")
   set(_compile_flags "$<$<BOOL:${_compile_flags}>:$<JOIN:${_compile_flags},\n>\n>")
   set(_compile_options "$<$<BOOL:${_compile_options}>:$<JOIN:${_compile_options},\n>\n>")
-  file(GENERATE OUTPUT "${_filename}" CONTENT "${_source_name_for_flags}\n${_compile_definitions}${_include_directories}${_compile_flags}${_compile_options}\n")
+  file(GENERATE OUTPUT "${_filename}" CONTENT "${_compile_definitions}${_include_directories}${_compile_flags}${_compile_options}\n")
 endfunction()
 
 function(add_precompiled_header _target _input)
@@ -123,7 +123,7 @@ function(add_precompiled_header _target _input)
       set(_compiler_FLAGS "@${_pch_cpp_flags_file}")
       add_custom_command(
         OUTPUT "${_output_cxx}"
-        COMMAND "${CMAKE_CXX_COMPILER}" ${_compiler_FLAGS} -std=gnu++1y -x c++-header -o "${_output_cxx}" -c "${_pchfile}"
+        COMMAND "${CMAKE_CXX_COMPILER}" ${_compiler_FLAGS} -x c++-header -o "${_output_cxx}" -c "${_pchfile}"
         DEPENDS "${_pchfile}" "${_pch_cpp_flags_file}"
         IMPLICIT_DEPENDS CXX "${_pch_header}"
         COMMENT "Precompiling ${_name} for ${_target} (C++)")
